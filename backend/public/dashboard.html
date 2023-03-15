@@ -53,25 +53,7 @@
           });
       }).finally(() => {
         document.getElementById("table").innerHTML = workshops.join("");
-
-        
-        
-        const f1 = (workshopId, btn) => {
-          localStorage.setItem('workshop', workshopId);
-          
-          fetch("/workshops", {
-              method: "PATCH",
-              headers: {
-                "Content-Type": "application/json",
-              },
-              body: JSON.stringify({
-                workshopId: workshopId,
-                active: true,
-              }),
-            })
-            .finally(() => btn.href = `/timer.html`);
-          }
-          
+  
         let btns = document.querySelectorAll(".goTimer");
 
         btns.forEach( (btn) => {
@@ -95,27 +77,6 @@
           });
         });
 
-        
-
-
-        // btns.forEach( (btn) => {
-        //   btn.addEventListener('click', (event) => {
-        //     localStorage.setItem('workshop', btn.id.toString());
-
-        //     fetch("/workshops", {
-        //       method: "PATCH",
-        //       headers: {
-        //         "Content-Type": "application/json",
-        //       },
-        //       body: JSON.stringify({
-        //         workshopId: btn.id.toString(),
-        //         active: true,
-        //       }),
-        //       }).then(res => console.log(res));
-
-        //   });
-
-        // });
       });
       
     }
@@ -140,9 +101,6 @@
 
       name.value = "";
     });
-      
-      
-      
   </script>
 </body>
 </html>
