@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Login Page</title>
+	<link rel="stylesheet" type="text/css" href="./css/LogIn.css">
+</head>
+<body>
+	<form action="/api/admin/login" method="post" >
+		<div class="group">
+		  <input type="text" name="user"><span class="highlight"></span><span class="bar"></span>
+		  <label>Name</label>
+		</div>
+		<div class="group">
+		  <input type="password" name="password" ><span class="highlight"></span><span class="bar"></span>
+		  <label>Password</label>
+		</div>
+		
+		<button type="submit" class="button buttonBlue">Log in
+		  <div class="ripples buttonRipples"><span class="ripplesCircle"></span></div>
+		</button> 
+	  </form>
+	
+</body>
+</html>

@@ -32,11 +32,8 @@ class SignUpScreen extends StatefulWidget {
 
 class _SignUpScreenState extends State<SignUpScreen> {
   String fname = "";
-
   String lname = "";
-
   String email = "";
-
   String password = "";
 
   @override
@@ -151,7 +148,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 String? token = prefs.getString("token");
 
                 if (token != null) {
-                  context.go("/landing");
+                  context.go("/home");
                 }
               },
             ),

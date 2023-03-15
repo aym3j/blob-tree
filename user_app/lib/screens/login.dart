@@ -31,7 +31,6 @@ class LoginScreen extends StatefulWidget {
 
 class _LoginScreenState extends State<LoginScreen> {
   String email = "";
-
   String password = "";
 
   @override
@@ -108,7 +107,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 String? token = prefs.getString("token");
 
                 if (token != null) {
-                  context.go("/landing");
+                  context.go("/home");
                 }
               },
             ),

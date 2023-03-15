@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Add workshop</title>
+	<link rel="stylesheet" type="text/css" href="./css/dashboard.css">
+</head>
+<body>
+  <div class="container">
+    <h1 class="contact-heading">Workshops</h1>
+    
+    <div class="table-title"></div>
+    <table class="table-fill">
+      <thead>
+        <tr>
+          <th class="text-left">Nom d'atelier</th>
+          <th class="text-left">Lancer</th>
+        </tr>
+      </thead>
+      <tbody class="table-hover" id="table">
+      </tbody>
+    </table>
+    <form>
+      <div class="group">
+        <input type="text" id="workshop-name"><span class="start-highlighspan"></span><span class="bar"></span>
+        <label>Nom d'atelier</label>
+      </div>
+      <button type="button" id="btn" class="button buttonBlue">
+        Ajouter un atelier
+        <div><span class="ripplesCircle"></span></div>
+      </button>
+    </form>
+  </div>
+  <script>
+    
+
+    const reloadTable = () => {
+      let workshops = [];
+      fetch("/workshops")
+        .then((response) => response.json())
+        .then((data) =>  {
+          data.forEach(e => {
+            workshops.push(`<tr>
+              <td class="text-left">${e}</td>
+              <td class="text-left">
+                <a class="goTimer" id="${e}" >
+                  <button type="button" id="btn-${e}" class="buttonB buttonBlueB">
+                    Lancer
+                  <div class="ripplesB buttonRipplesB"><span class="ripplesCircleB"></span></div>
+                </button>
+                </a>
+              </td>
+            </tr>`)
+          });
+      }).finally(() => {
+        document.getElementById("table").innerHTML = workshops.join("");
+
+        
+        
+        const f1 = (workshopId, btn) => {
+          localStorage.setItem('workshop', workshopId);
+          
+          fetch("/workshops", {
+              method: "PATCH",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({
+                workshopId: workshopId,
+                active: true,
+              }),
+            })
+            .finally(() => btn.href = `/timer.html`);
+          }
+          
+        let btns = document.querySelectorAll(".goTimer");
+
+        btns.forEach( (btn) => {
+          const workshopId = btn.id.toString()
+          // const thisbtn = btn.getElementById(workshopId);
+          btn.addEventListener('click', event => {
+
+            localStorage.setItem('workshop', workshopId);
+          
+          fetch("/workshops", {
+              method: "PATCH",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({
+                workshopId: workshopId,
+                active: true,
+              }),
+            })
+            .finally(() => window.location.href = `/timer.html`);
+          });
+        });
+
+        
+
+
+        // btns.forEach( (btn) => {
+        //   btn.addEventListener('click', (event) => {
+        //     localStorage.setItem('workshop', btn.id.toString());
+
+        //     fetch("/workshops", {
+        //       method: "PATCH",
+        //       headers: {
+        //         "Content-Type": "application/json",
+        //       },
+        //       body: JSON.stringify({
+        //         workshopId: btn.id.toString(),
+        //         active: true,
+        //       }),
+        //       }).then(res => console.log(res));
+
+        //   });
+
+        // });
+      });
+      
+    }
+
+    
+
+    reloadTable();
+
+    let name = document.getElementById("workshop-name");
+    let btn = document.getElementById("btn");
+
+    btn.addEventListener('click', event => {
+      fetch("/workshops", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          workshopId: name.value,
+        }),
+      }).then((response) => reloadTable());
+
+      name.value = "";
+    });
+      
+      
+      
+  </script>
+</body>
+</html>

@@ -1,8 +1,9 @@
-const { User } = require("../models/");
+const { User } = require("../../models");
 const router = require("express").Router();
 const Joi = require("joi");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
+const verifyToken = require("./verifyToken");
 
 const registerValidation = (data) => {
   const schema = Joi.object({
@@ -75,6 +76,27 @@ router.post("/login", async (req, res) => {
 
   res.header("auth-token", token);
   res.status(201).json(user);
+});
+
+router.patch("/", verifyToken, async (req, res) => {
+  const { workshopId, currentState, futureState } = req.body;
+
+  try {
+    const user = await User.findOne({ where: { id: req.user._id } });
+
+    console.log(user);
+
+    if (workshopId) user.workshopId = workshopId;
+    if (currentState) user.currentState = currentState;
+    if (futureState) user.futureState = futureState;
+
+    await user.save();
+
+    res.json(user);
+  } catch (err) {
+    logger.error(err.message);
+    res.status(400).json({ error: err.message });
+  }
 });
 
 module.exports = router;

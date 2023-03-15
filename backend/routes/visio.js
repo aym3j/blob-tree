@@ -5,18 +5,6 @@ const Canvas = require("canvas");
 const sequelize = require("sequelize");
 
 router.get("/:workshop", async (req, res) => {
-  //* checking if the workshop exists
-  const workshopExist = await User.findOne({
-    where: { workshopId: req.params.workshop },
-  });
-
-  if (!workshopExist)
-    return res
-      .status(400)
-      .send(
-        "<html><body><img src='http://localhost:3000/error.png'></body></html>"
-      );
-
   // SELECT COUNT(id) AS "NB", "currentState" FROM users WHERE "workshopId"='1'  GROUP BY "currentState";
   const currentState = await User.findAll({
     where: { workshopId: req.params.workshop },
@@ -36,52 +24,73 @@ router.get("/:workshop", async (req, res) => {
     group: "futureState",
   });
 
-  const states = [
-    { x: 50, y: 50 },
-    { x: 100, y: 150 },
-    { x: 80, y: 200 },
-    { x: 150, y: 70 },
-    { x: 200, y: 170 },
-  ];
-
-  fs.readFile(__dirname + "/../assets/source.png", async (err, data) => {
+  fs.readFile(__dirname + "/../assets/test_image.png", async (err, data) => {
     const img = await Canvas.loadImage(data);
-    var canvas = new Canvas.Canvas(img.width, img.height);
-    var ctx = canvas.getContext("2d");
 
+    var canvas = new Canvas.Canvas(img.width, img.height);
+
+    var ctx = canvas.getContext("2d");
     ctx.drawImage(img, 0, 0, img.width, img.height);
 
-    // represent current states
-    ctx.fillStyle = "red";
-    ctx.strokeStyle = "red";
+    const WIDTH = img.width; // 728
+    const HEIGHT = img.height; // 1030
 
+    const states = [
+      { x: WIDTH * 0.15, y: HEIGHT * 0.82 },
+      { x: WIDTH * 0.35, y: HEIGHT * 0.92 },
+      { x: WIDTH * 0.45, y: HEIGHT * 0.78 },
+      { x: WIDTH * 0.64, y: HEIGHT * 0.85 },
+      { x: WIDTH * 0.81, y: HEIGHT * 0.93 },
+      { x: WIDTH * 0.29, y: HEIGHT * 0.66 },
+      { x: WIDTH * 0.5, y: HEIGHT * 0.6 },
+      { x: WIDTH * 0.91, y: HEIGHT * 0.58 },
+      { x: WIDTH * 0.88, y: HEIGHT * 0.76 },
+      { x: WIDTH * 0.36, y: HEIGHT * 0.41 },
+      { x: WIDTH * 0.57, y: HEIGHT * 0.46 },
+      { x: WIDTH * 0.69, y: HEIGHT * 0.46 },
+      { x: WIDTH * 0.88, y: HEIGHT * 0.41 },
+      { x: WIDTH * 0.11, y: HEIGHT * 0.4 },
+      { x: WIDTH * 0.45, y: HEIGHT * 0.24 },
+      { x: WIDTH * 0.65, y: HEIGHT * 0.32 },
+      { x: WIDTH * 0.67, y: HEIGHT * 0.19 },
+      { x: WIDTH * 0.78, y: HEIGHT * 0.27 },
+      { x: WIDTH * 0.09, y: HEIGHT * 0.18 },
+      { x: WIDTH * 0.45, y: HEIGHT * 0.08 },
+      { x: WIDTH * 0.89, y: HEIGHT * 0.08 },
+    ];
+
+    // represent current states
+    ctx.fillStyle = "blue";
+    ctx.strokeStyle = "blue";
     currentState.forEach((state) => {
       const nbStates = state.dataValues.nb;
       const x = states[state.dataValues.currentState - 1].x;
       const y = states[state.dataValues.currentState - 1].y;
       for (let i = 0; i < nbStates; i++) {
-        const randNb = Math.random() * 30 - 15;
+        const randX = Math.random() * 40 - 20;
+        const randY = Math.random() * 40 - 20;
 
         ctx.beginPath();
-        ctx.arc(x + randNb, y + randNb, 3, 0, 2 * Math.PI, false);
+        ctx.arc(x + randX, y + randY, 10, 0, 2 * Math.PI, false);
         ctx.fill();
         ctx.stroke();
         ctx.closePath();
       }
     });
 
-    ctx.fillStyle = "green";
-    ctx.strokeStyle = "green";
+    // represent future states
+    ctx.fillStyle = "red";
+    ctx.strokeStyle = "red";
     futureState.forEach((state) => {
-      console.log(state.dataValues);
       const nbStates = state.dataValues.nb;
       const x = states[state.dataValues.futureState - 1].x;
       const y = states[state.dataValues.futureState - 1].y;
       for (let i = 0; i < nbStates; i++) {
-        const randNb = Math.random() * 30 - 15;
+        const randX = Math.random() * 40 - 20;
+        const randY = Math.random() * 40 - 20;
 
         ctx.beginPath();
-        ctx.arc(x + randNb, y + randNb, 3, 0, 2 * Math.PI, false);
+        ctx.arc(x + randX, y + randY, 10, 0, 2 * Math.PI, false);
         ctx.fill();
         ctx.stroke();
         ctx.closePath();
@@ -89,7 +98,7 @@ router.get("/:workshop", async (req, res) => {
     });
 
     res.send(
-      '<html><body><img style="display: block; margin-left: auto; margin-right: auto; width: 50%;" src="' +
+      '<html><body><img style="display: block; height: 100%;  margin: 0 auto;" src="' +
         canvas.toDataURL() +
         '" /></body></html>'
     );

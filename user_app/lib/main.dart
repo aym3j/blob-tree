@@ -3,6 +3,7 @@ import 'package:user_app/screens/home.dart';
 import 'package:user_app/screens/login.dart';
 import 'package:user_app/screens/signup.dart';
 import 'package:go_router/go_router.dart';
+import 'package:user_app/screens/waiting.dart';
 
 void main() {
   runApp(MyApp());
@@ -12,19 +13,25 @@ class MyApp extends StatelessWidget {
   final GoRouter _router = GoRouter(
     routes: <GoRoute>[
       GoRoute(
-        path: '/login',
+        path: '/',
         builder: (BuildContext context, GoRouterState state) => LoginScreen(),
-      ),
-      GoRoute(
-        path: '/signup',
-        builder: (BuildContext context, GoRouterState state) => SignUpScreen(),
+        routes: [
+          GoRoute(
+            path: "signup",
+            builder: (BuildContext context, GoRouterState state) =>
+                SignUpScreen(),
+          )
+        ],
       ),
       GoRoute(
         path: '/home',
         builder: (BuildContext context, GoRouterState state) => HomeScreen(),
       ),
+      GoRoute(
+        path: '/waiting',
+        builder: (BuildContext context, GoRouterState state) => WaitingScreen(),
+      ),
     ],
-    initialLocation: "/home",
   );
 
   @override
