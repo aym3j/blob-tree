@@ -5,24 +5,18 @@ const { Model } = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
   class User extends Model {
     static associate({ Workshop }) {
-      User.belongsTo(Workshop, { foreignKey: "workshopId" });
+      User.belongsTo(Workshop, {
+        foreignKey: "workshopId",
+        onDelete: "cascade",
+      });
     }
   }
   User.init(
     {
-      nom: {
-        type: DataTypes.STRING,
-        allowNull: false,
-      },
-      prenom: {
-        type: DataTypes.STRING,
-        allowNull: false,
-      },
-      email: {
-        type: DataTypes.STRING,
-      },
-      password: {
-        type: DataTypes.STRING,
+      id: {
+        type: DataTypes.UUID,
+        defaultValue: DataTypes.UUIDV4,
+        primaryKey: true,
       },
       workshopId: {
         type: DataTypes.STRING,
@@ -32,6 +26,10 @@ module.exports = (sequelize, DataTypes) => {
       },
       futureState: {
         type: DataTypes.INTEGER,
+      },
+      submit: {
+        type: DataTypes.BOOLEAN,
+        defaultValue: false,
       },
     },
     {

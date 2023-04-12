@@ -22,6 +22,7 @@ dev_dependencies:
   go_router: ^6.2.0
   http: ^0.13.5
   shared_preferences: ^2.0.18
+  qr_code_scanner: ^1.0.1
 
 flutter:
   uses-material-design: true

@@ -2,8 +2,10 @@
 
 body {
 	font-family: Helvetica;
-	background: #eee;
+  background: linear-gradient(to bottom right, #000, #222);
   -webkit-font-smoothing: antialiased;
+  margin: 0;
+  padding: 0;
 }
 
 h1{
@@ -29,21 +31,13 @@ h3 { color: #4a89dc; }
 .group { 
 	position: relative; 
 	margin-bottom: 45px; 
-    width: 90%;
-    align-content: center;
+  width: 90%;
+  align-content: center;
 }
-
-.group1 { 
-	position: relative; 
-	margin-bottom: 45px; 
-    width: 40%;
-}
-
 
 input {
 	font-size: 18px;
 	padding: 10px 10px 10px 5px;
-	-webkit-appearance: none;
 	display: block;
 	background: #fafafa;
 	color: #636363;
@@ -157,16 +151,6 @@ input:focus ~ .highlight {
 }
 .button:focus { outline: 0; }
 
-
-/* Button modifiers */
-
-.buttonBlue {
-  background: #4a89dc;
-  text-shadow: 1px 1px 0 rgba(39, 110, 204, .5);
-}
-
-.buttonBlue:hover { background: #357bd8; }
-
 /*list*/
 
 div.table-title {
@@ -200,20 +184,19 @@ div.table-title {
   padding:5px;
   width: 100%;
   box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
-  /* animation: float 5s infinite; */
 }
  
 th {
-  color:#D5DDE5;;
   background:#4a89dc;
   border-bottom:4px solid #9ea7af;
   border-right: 1px solid #95C1FA;
   font-size:23px;
-  font-weight: 100;
   padding:24px;
   text-align:left;
   text-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
   vertical-align:middle;
+  color: #000;
+  font-weight: 500;
 }
 
 th:first-child {
@@ -227,7 +210,6 @@ th:last-child {
   
 tr {
   border-top: 1px solid #C1C3D1;
-  border-bottom-: 1px solid #C1C3D1;
   color:#666B85;
   font-size:16px;
   font-weight:normal;
@@ -252,8 +234,7 @@ tr:nth-child(odd) td {
   background:#EBEBEB;
 }
 tr:nth-child(odd):hover td {
-  background:#95C1FA
-  ;
+  background:#95C1FA;
 }
 
 tr:last-child td:first-child {
@@ -298,51 +279,147 @@ td.text-right {
 /* Button */
 
 .buttonB {
-  /* position: relative; */
   display: inline-block;
   padding: 12px 24px;
-  margin: .3em 0 1em 0;
   width: 100%;
   vertical-align: middle;
   color: #fff;
   font-size: 16px;
-  line-height: 20px;
   -webkit-font-smoothing: antialiased;
   text-align: center;
   letter-spacing: 1px;
   background: transparent;
   border: 0;
-  border-bottom: 2px solid #3160B6;
   cursor: pointer;
-  transition: all 0.15s ease;
 }
-.buttonB:focus { outline: 0; }
 
 /* Button modifiers */
 
-.buttonBlueB {
+.buttonBlue {
   background: #4a89dc;
-  text-shadow: 1px 1px 0 rgba(39, 110, 204, .5);
 }
 
-.buttonBlueB:hover { background: #357bd8; }
+.buttonBlue:hover { background: #357bd8; }
 
-.overlay {
-  position: fixed;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  background: rgba(0, 0, 0, 0.7);
-  transition: opacity 500ms;
-  visibility: hidden;
-  opacity: 0;
-}
-.overlay:target {
-  visibility: visible;
-  opacity: 1;
+.buttonRed {
+  background: #f54a4a;
+  text-shadow: 1px 1px 0 rgb(255, 52, 52);
 }
 
-a {
-  color: inherit;
+.buttonRed:hover { background: #ff3434; }
+
+.contact-heading {
+  font-size: 36px;
+  font-weight: bold;
+  margin-bottom: 20px;
+}
+
+.table-fill {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 30px;
+}
+
+.table-fill th, .table-fill td {
+  padding: 10px;
+  border: 1px solid #ddd;
+  text-align: left;
+}
+
+.table-fill th {
+  background-color: #f2f2f2;
+}
+
+.table-fill tr:hover {
+  background-color: #f5f5f5;
+}
+
+.group {
+  position: relative;
+  margin-bottom: 45px;
+}
+
+input {
+  font-size: 18px;
+  padding: 10px 10px 10px 5px;
+  display: block;
+  width: 100%;
+  border: none;
+  border-bottom: 1px solid #ccc;
+}
+
+input:focus {
+  outline: none;
+}
+
+label {
+  font-size: 18px;
+  font-weight: bold;
+  color: #999;
+  position: absolute;
+  pointer-events: none;
+  left: 5px;
+  top: 10px;
+  transition: 0.2s ease all;
+}
+
+input:focus ~ label, input:valid ~ label {
+  top: -20px;
+  font-size: 14px;
+  color: #bc790e;
+}
+
+.bar {
+  position: relative;
+  display: block;
+  width: 100%;
+}
+
+.bar:before, .bar:after {
+  content: '';
+  height: 2px;
+  width: 0;
+  bottom: 0px;
+  position: absolute;
+  background: #bc790e;
+  transition: 0.2s ease all;
+}
+
+.bar:before {
+  left: 50%;
+}
+
+.bar:after {
+  right: 50%;
+}
+
+input:focus ~ .bar:before, input:focus ~ .bar:after {
+  width: 50%;
+}
+
+.button {
+  font-size: 20px;
+  font-weight: bold;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  padding: 10px 20px;
+  margin-top: 20px;
+  background: linear-gradient(to bottom, #d37a05, #693d03);
+}
+
+button:hover {
+  background: linear-gradient(to bottom, #784604, #d0b99d);
+}
+
+h1 {
+  text-align: center;
+  margin-top: 150px;
+  font-size: 48px;
+  font-weight: bold;
+  font-family: monospace;
+  color: white;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+  letter-spacing: 4px;
+  text-transform: uppercase;
 }

@@ -1,22 +1,18 @@
 const router = require("express").Router();
-const verify = require("./auth/verifyToken");
 const { Workshop } = require("../models");
 
 router.get("/", async (req, res) => {
   try {
     const workshops = await Workshop.findAll();
 
-    res.status(200).json(workshops.map((e) => e.workshopId));
-  } catch (err) {
-    res.status(400).json({ error: err.message });
-  }
-});
-
-router.get("/active", async (req, res) => {
-  try {
-    const workshops = await Workshop.findAll({ where: { active: true } });
-
-    res.status(200).json(workshops.map((e) => e.workshopId));
+    res.status(200).json(
+      workshops.map((e) => {
+        return {
+          workshopId: e.workshopId,
+          description: e.description,
+        };
+      })
+    );
   } catch (err) {
     res.status(400).json({ error: err.message });
   }
@@ -27,6 +23,7 @@ router.post("/", async (req, res) => {
     //* create a new workshop
     const workshop = await Workshop.create({
       workshopId: req.body.workshopId,
+      description: req.body.description,
     });
 
     res.status(201).json(workshop);
@@ -35,19 +32,33 @@ router.post("/", async (req, res) => {
   }
 });
 
-router.patch("/", async (req, res) => {
-  console.log(req.body);
+router.patch("/:workshopId", async (req, res) => {
+  const { workshopId } = req.params;
+  const { active, pinCode } = req.body;
 
   try {
     const workshop = await Workshop.findOne({
-      where: { workshopId: req.body.workshopId },
+      where: { workshopId },
     });
 
-    workshop.active = req.body.active;
+    workshop.active = active;
+    workshop.pinCode = pinCode;
 
     await workshop.save();
 
     res.json(workshop);
+  } catch (err) {
+    res.status(400).json({ error: err.message });
+  }
+});
+
+router.delete("/:workshopId", async (req, res) => {
+  const { workshopId } = req.params;
+  try {
+    const workshop = await Workshop.findOne({ where: { workshopId } });
+    await workshop.destroy();
+
+    res.json({ message: "workshop deleted" });
   } catch (err) {
     res.status(400).json({ error: err.message });
   }

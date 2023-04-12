@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="/user/css/style.css">
+  <title>Find a Workshop</title>
+</head>
+<body>
+  <div class="hero">
+    <div class="sub-hero">
+      <div class="text-login"><h2>Welcome to the blob tree test please Insert the workshop code to log into the workshop</h2></div>
+      <div class="login-form">
+        <form action="/api/users/" method="post" class="form" id="form">
+          <input type="number" class="code" id="pinCode" placeholder="Code here">
+          <button type="submit" class="btn">Login</button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    document.forms["form"].addEventListener("submit", (event) => {
+      event.preventDefault();
+
+      let userId = localStorage.getItem('userId');
+
+      if (userId == null) {
+        userId = "New user";
+      }
+
+      const pinCode = document.getElementById("pinCode").value;
+
+      fetch("/api/users/" + userId, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          pinCode: pinCode,
+        }),
+      }).then((response) => {
+        if (response.status == 200) {
+          return response.json();
+        } else if (response.status == 406) {
+            window.location.href = "/sorry"
+        } else {
+          throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+      }).then((body) => {
+        localStorage.setItem('userId', body.id);
+        localStorage.setItem('workshop', body.workshopId);
+
+        window.location.href = "/form"
+      });
+    });
+  </script>
+</body>
+</html>

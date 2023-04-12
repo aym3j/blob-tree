@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="/user/css/style.css">
+  <title>Rate User</title>
+</head>
+<body>
+  <div class="hero-rate">
+    <div class="user-left">
+      <img src="/user/images/rate.png" alt="">
+    </div>
+    <div class="user-right">
+      <form action="" method="post" class="form-rate" id="form">
+        <h2>Please fill in the next infos</h2>
+        <input type="number" class="code code2" placeholder="Current Position" min="1" max="21" id="current">
+        <input type="number" class="code code2" placeholder="Future Position" min="1" max="21" id="future">
+        <button type="submit" class="btn btn2">Send</button>
+      </form>
+    </div>
+  </div>
+  
+  <script>
+    
+
+    document.forms["form"].addEventListener("submit", (event) => {
+      event.preventDefault();
+
+      const current = document.getElementById("current").value;
+      const future = document.getElementById("future").value;
+      const userId = localStorage.getItem("userId");
+      
+      
+      if (!userId) {
+        window.location.href = "/"
+      } else if (!current || !future) {
+        alert("Please enter both your current and future positions");
+      } else {
+        fetch("/api/users/" + userId, {
+          method: "PATCH",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            currentState: current,
+            futureState: future,
+          }),
+        }).then((response) => {
+          if (response.status == 200) {
+            return response.json();
+          } else {
+            throw new Error(`HTTP error! Status: ${response.status == 406}`);
+          }
+        }).then((body) => {
+          window.location.href = "/thanks"
+        });
+      }
+
+    });
+  </script>
+</body>
+</html>

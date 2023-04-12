@@ -1,0 +1,182 @@
+* { box-sizing:border-box; }
+
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: Helvetica;
+  background: #eee;
+  -webkit-font-smoothing: antialiased;
+  background: linear-gradient(to bottom right, #000, #222);
+}
+
+h1, h3 { font-weight: 300; }
+
+h1 { color: #636363; }
+
+form {
+  width: 380px;
+  margin: 4em auto;
+  padding: 3em 2em 2em 2em;
+  background: #fafafa;
+  border: 1px solid #ebebeb;
+  box-shadow: rgba(0,0,0,0.14902) 0px 1px 1px 0px,rgba(0,0,0,0.09804) 0px 1px 2px 0px;
+  margin-top: 10%;
+}
+
+.group { 
+  position: relative; 
+  margin-bottom: 45px; 
+}
+
+input {
+  font-size: 18px;
+  padding: 10px 10px 10px 5px;
+  display: block;
+  background: #fafafa;
+  color: #636363;
+  width: 100%;
+  border: none;
+  border-radius: 0;
+  border-bottom: 1px solid #757575;
+}
+
+input:focus { outline: none; }
+
+label {
+  color: #999; 
+  font-size: 18px;
+  font-weight: normal;
+  position: absolute;
+  pointer-events: none;
+  left: 5px;
+  top: 10px;
+  transition: all 0.2s ease;
+}
+
+input:focus ~ label, input.used ~ label {
+  top: -20px;
+  transform: scale(.75); left: -2px;
+  color: #4a89dc;
+}
+
+input:focus ~ .bar:before, input:focus ~ .bar:after { width: 50%; }
+
+input:focus ~ .highlight {
+  animation: inputHighlighter 0.3s ease;
+}
+  
+form {
+  background-color: rgba(217, 217, 217, 0.17);
+  border: none;
+  margin-top: -10px;
+  border-radius: 28px;
+  padding: 50px;
+  max-width: 400px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+}
+
+input[type="text"], input[type="password"] {
+  font-size: 16px;
+  padding: 10px 20px;
+  display: block;
+  width: 100%;
+  border: none;
+  border-bottom: 1px solid #aaa;
+  margin-bottom: 20px;
+  transition: all 0.3s ease;
+  background-color: transparent;
+  color: #fff;
+}
+
+input[type="text"]:focus, input[type="password"]:focus {
+  outline: none;
+  border-bottom: 1px solid rgb(183, 180, 180);
+}
+  
+button[type="submit"] {
+  background: linear-gradient(to bottom, #d37a05, #693d03);
+  border-radius: 50px;
+  border: none;
+  color: white;
+  cursor: pointer;
+  font-size: 16px;
+  padding: 10px 20px;
+  margin-top: 20px;
+  transition: all 0.3s ease;
+}
+
+button[type="submit"]:hover {
+  background: linear-gradient(to bottom, #784604, #d0b99d);
+}
+
+.group {
+  position: relative;
+  margin-bottom: 40px;
+}
+
+.group input {
+  border-radius: 30px;
+  background-color: rgba(255, 255, 255, 0.3);
+  border: none;
+  padding: 15px 20px;
+  color: #fff;
+}
+
+.group input:focus {
+  background-color: rgba(255, 255, 255, 0.5);
+}
+
+.group label {
+  position: absolute;
+  top: 0;
+  left: 0;
+  font-size: 16px;
+  padding: 15px 20px;
+  color: #fff;
+  pointer-events: none;
+  transition: all 0.3s ease;
+}
+
+.group input:focus ~ label,
+.group input:valid ~ label {
+  top: -25px;
+  left: 0;
+  font-size: 12px;
+  padding: 0 5px;
+  background-color: #2196f3;
+}
+#username::-webkit-input-placeholder,
+#password::-webkit-input-placeholder {
+  color: #fff;
+}
+
+#username:-moz-placeholder,
+#password:-moz-placeholder {
+  color: #fff;
+}
+
+#username::-moz-placeholder,
+#password::-moz-placeholder {
+  color: #fff;
+}
+
+#username:-ms-input-placeholder,
+#password:-ms-input-placeholder {
+  color: #fff;
+}
+
+h1 {
+  text-align: center;
+  margin-top: 150px;
+  font-size: 48px;
+  font-weight: bold;
+  font-family: monospace;
+  color: white;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+  letter-spacing: 4px;
+  text-transform: uppercase;
+}

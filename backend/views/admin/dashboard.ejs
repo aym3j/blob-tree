@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+  <title>Dashboard</title>
+  <link rel="stylesheet" type="text/css" href="/admin/css/dashboard.css">
+</head>
+<body>
+  <div class="container">
+    <h1 >Workshops</h1>
+    <div class="table-title"></div>
+    <table class="table-fill">
+      <thead>
+        <tr>
+          <th>Workshop Name</th>
+          <th>Start</th>
+          <th>Delete</th>
+        </tr>
+      </thead>
+      <tbody class="table-hover" id="table">
+      </tbody>
+    </table>
+    <form>
+      <div class="group">
+        <input type="text" id="workshop-name"><span class="start-highlighspan"></span><span class="bar"></span>
+        <label>Workshop Name</label>
+      </div>
+      <br>
+      <div class="group">
+        <input type="text" id="workshop-desc"><span class="start-highlighspan"></span><span class="bar"></span>
+        <label>Workshop Description</label>
+      </div>
+      <button type="button" id="btn" class="button">
+        Add a New Workshop
+      </button>
+    </form>
+  </div>
+
+
+  <script>
+  
+    const reloadTable = () => {
+      let workshops = [];
+      fetch("/api/workshops")
+        .then((response) => response.json())
+        .then((data) =>  {
+          console.log(data);
+          data.forEach(e => {
+            workshops.push(`<tr>
+              <td>
+                <b>${e.workshopId}</b>
+                <p><small>${e.description}</small></p>
+              </td>
+              <td>
+                <a class="goTimer" id="${e.workshopId}" >
+                  <button type="button" id="btn-${e.workshopId}" class="buttonB buttonBlue">
+                    Start
+                </button>
+                </a>
+              </td>
+              <td>
+                <a class="delete" id="${e.workshopId}" >
+                  <button type="button" id="btn-${e.workshopId}" class="buttonB buttonRed">
+                    Delete
+                </button>
+                </a>
+              </td>
+            </tr>`)
+          });
+        }).finally(() => {
+          document.getElementById("table").innerHTML = workshops.join("");
+          let btns = document.querySelectorAll(".goTimer");
+          
+          btns.forEach( (btn) => {
+            btn.addEventListener('click', event => {
+              const workshopId = btn.id.toString();
+              const pinCode = Math.random().toString().substr(3, 4);
+
+              localStorage.setItem('workshop', workshopId);
+              localStorage.setItem('PINcode', pinCode);
+          
+              fetch("/api/workshops/" + workshopId, {
+                method: "PATCH",
+                headers: {
+                  "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                  active: true,
+                  pinCode: pinCode,
+                }),
+              })
+                .finally(() => window.location.href = "/admin/timer");
+            });
+          });
+
+          let delBtns = document.querySelectorAll(".delete");
+        
+          delBtns.forEach((btn) => {
+            const workshopId = btn.id.toString();
+
+            btn.addEventListener('click', event => {
+              fetch("/api/workshops/" + workshopId, {
+                method: "DELETE",
+                headers: {
+                  "Content-Type": "application/json",
+                },
+              }).finally(() => reloadTable())
+            })
+          });
+        })
+    }
+
+    reloadTable();
+
+    let name = document.getElementById("workshop-name");
+    let desc = document.getElementById("workshop-desc");
+    let btn = document.getElementById("btn");
+
+    btn.addEventListener('click', event => {
+      fetch("/api/workshops", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          workshopId: name.value,
+          description: desc.value,
+        }),
+      }).then((response) => reloadTable());
+
+      name.value = "";
+      desc.value = "";
+    });
+  </script>
+</body>
+</html>

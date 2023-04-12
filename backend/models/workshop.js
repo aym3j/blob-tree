@@ -9,10 +9,19 @@ module.exports = (sequelize, DataTypes) => {
       workshopId: {
         type: DataTypes.STRING,
         primaryKey: true,
+        validate: {
+          notEmpty: true,
+        },
+      },
+      description: {
+        type: DataTypes.STRING,
       },
       active: {
         type: DataTypes.BOOLEAN,
         defaultValue: false,
+      },
+      pinCode: {
+        type: DataTypes.STRING(4),
       },
     },
     {
